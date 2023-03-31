@@ -4,6 +4,7 @@ import Qt.labs.settings
 
 Component {
     Rectangle {
+        clip: true
         id: songList
         width: 155
         height: 40
@@ -44,12 +45,13 @@ Component {
                 source: coverImg
             }
             Column {
-                Text {
+                Label {
                     text: listName
+                    elide: Text.ElideRight
                     font.pixelSize: 12
                     font.bold: songList.ListView.isCurrentItem ? true : false;
                 }
-                Text {
+                Label {
                     text: songList.size+"首"
                 }
             }

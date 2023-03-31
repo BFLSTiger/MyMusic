@@ -16,7 +16,9 @@ Rectangle {
         text: body.songName
         anchors.left: parent.left
         anchors.right: playButton.left
+        elide: Text.ElideRight
         anchors.leftMargin: 80
+        anchors.rightMargin: 40
         font.pixelSize: 14
         anchors.verticalCenter: parent.verticalCenter
     }
