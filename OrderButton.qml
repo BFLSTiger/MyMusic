@@ -1,9 +1,19 @@
 import QtQuick 2.15
+import Qt.labs.settings
 
 Rectangle {
     height: 20
     width: 20
-    property int type
+    property int type: orderSettings.type
+    Settings {
+        id: orderSettings
+        fileName: "settings.ini"
+        category: ""
+        property int type: 0
+    }
+    Component.onDestruction: {
+        orderSettings.type = type;
+    }
     Image {
         id: orderImg
         mipmap: true
