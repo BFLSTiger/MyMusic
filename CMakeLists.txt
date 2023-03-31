@@ -17,6 +17,7 @@ set(TS_FILES MyMusic_zh_CN.ts)
 set(PROJECT_SOURCES
         main.cpp
         qml.qrc
+		icon.rc
         ${TS_FILES}
 )
 
