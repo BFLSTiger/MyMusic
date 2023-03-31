@@ -1,0 +1,44 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>PlayButton.qml</file>
+        <file>MySlider.qml</file>
+        <file>VolumeArea.qml</file>
+        <file>MusicSlider.qml</file>
+        <file>src/png/pause.png</file>
+        <file>src/png/play.png</file>
+        <file>src/png/silent.png</file>
+        <file>src/png/stop.png</file>
+        <file>src/png/voice.png</file>
+        <file>src/js/time.js</file>
+        <file>Footer.qml</file>
+        <file>src/png/default.png</file>
+        <file>src/png/add.png</file>
+        <file>Body.qml</file>
+        <file>Header.qml</file>
+        <file>src/png/close.png</file>
+        <file>src/png/close-active.png</file>
+        <file>src/png/play-active.png</file>
+        <file>src/png/pause-active.png</file>
+        <file>src/png/silent-active.png</file>
+        <file>src/png/voice-active.png</file>
+        <file>src/png/add-active.png</file>
+        <file>SongDelegate.qml</file>
+        <file>SongListDelegate.qml</file>
+        <file>SongListHeader.qml</file>
+        <file>SongHeader.qml</file>
+        <file>OrderButton.qml</file>
+        <file>src/png/loop.png</file>
+        <file>src/png/loop-active.png</file>
+        <file>src/png/next.png</file>
+        <file>src/png/next-active.png</file>
+        <file>src/png/ordered.png</file>
+        <file>src/png/ordered-active.png</file>
+        <file>src/png/random.png</file>
+        <file>src/png/random-active.png</file>
+        <file>NextButton.qml</file>
+        <file>SongPopup.qml</file>
+        <file>src/png/MusicLogo.png</file>
+        <file>SongListPopup.qml</file>
+    </qresource>
+</RCC>
