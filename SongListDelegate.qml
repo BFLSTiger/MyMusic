@@ -27,6 +27,7 @@ Component {
                 size = 0;
                 currentIndex = -1;
                 init = 0;
+                listInit = 0;
             }
         }
 
