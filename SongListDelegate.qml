@@ -13,7 +13,6 @@ Component {
         property var songs: JSON.parse(listSettings.songsJSON)
         property int size: songs.length
         property int currentIndex: listSettings.currentIndex
-        property int init: listInit
         Settings {
             id: listSettings
             fileName: "settings.ini"
@@ -22,11 +21,10 @@ Component {
             property string songsJSON: '[]'
         }
         Component.onCompleted: {
-            if(init) {
+            if(listInit) {
                 songs = [];
                 size = 0;
                 currentIndex = -1;
-                init = 0;
                 listInit = 0;
             }
         }
