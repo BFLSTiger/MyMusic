@@ -146,6 +146,17 @@ Window {
         icon.source: "qrc:/src/png/MusicLogo.png"
         menu: Menu {
             MenuItem {
+                text: player.playbackState === MediaPlayer.PlayingState ? "暂停" : "播放"
+                onTriggered: {
+                    if(player.playbackState === MediaPlayer.PlayingState) {
+                        player.pause();
+                    }
+                    else {
+                        player.play();
+                    }
+                }
+            }
+            MenuItem {
                 text: "退出"
                 onTriggered: {
                     Qt.quit();
