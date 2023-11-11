@@ -1,6 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls
-import Qt.labs.settings
+import QtCore
 
 Component {
     Rectangle {
@@ -15,7 +15,7 @@ Component {
         property int currentIndex: listSettings.currentIndex
         Settings {
             id: listSettings
-            fileName: "settings.ini"
+            location: "file:settings.ini"
             category: listName
             property int currentIndex: -1
             property string songsJSON: '[]'

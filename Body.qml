@@ -1,7 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls
 import QtQuick.Layouts
-import Qt.labs.settings
+import QtCore
 
 Rectangle {
     width: parent.width
@@ -13,7 +13,7 @@ Rectangle {
     signal songChanged()
     Settings {
         id: settings
-        fileName: "settings.ini"
+        location: "file:settings.ini"
         category: ""
         property string source: ""
         property int listIndex: -1

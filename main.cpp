@@ -12,6 +12,9 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     QGuiApplication app(argc, argv);
+    app.setOrganizationName("BFLSTiger");
+    app.setOrganizationDomain("BFLSTiger.github.com");
+    app.setApplicationName("MyMusic");
     app.setWindowIcon(QIcon(":/src/png/MusicLogo.png"));
     QSharedMemory shm(app.applicationName());
     if(!shm.create(1))

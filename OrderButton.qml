@@ -1,5 +1,5 @@
 import QtQuick 2.15
-import Qt.labs.settings
+import QtCore
 
 Rectangle {
     height: 20
@@ -7,7 +7,7 @@ Rectangle {
     property int type: orderSettings.type
     Settings {
         id: orderSettings
-        fileName: "settings.ini"
+        location: "file:settings.ini"
         category: ""
         property int type: 0
     }

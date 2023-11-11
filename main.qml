@@ -3,7 +3,7 @@ import QtQuick.Window 2.15
 import QtMultimedia
 import QtQuick.Controls
 import Qt.labs.platform
-import Qt.labs.settings
+import QtCore
 import QtQml
 
 Window {
@@ -173,7 +173,7 @@ Window {
         }
     }
     Settings {
-        fileName: "settings.ini"
+        location: "file:settings.ini"
         category: ""
         property alias volume: output.volume
     }
