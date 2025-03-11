@@ -1,18 +1,18 @@
-import QtQuick 2.15
+import QtQuick
 import QtCore
 
 Rectangle {
     height: 20
     width: 20
-    property int type: orderSettings.type
+    property int type: orderMemory.type
     Settings {
-        id: orderSettings
-        location: "file:settings.ini"
+        id: orderMemory
+        location: "file:memory.ini"
         category: ""
         property int type: 0
     }
     Component.onDestruction: {
-        orderSettings.type = type;
+        orderMemory.type = type;
     }
     Image {
         id: orderImg

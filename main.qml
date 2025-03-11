@@ -1,5 +1,5 @@
-import QtQuick 2.15
-import QtQuick.Window 2.15
+import QtQuick
+import QtQuick.Window
 import QtMultimedia
 import QtQuick.Controls
 import Qt.labs.platform
@@ -173,7 +173,7 @@ Window {
         }
     }
     Settings {
-        location: "file:settings.ini"
+        location: "file:memory.ini"
         category: ""
         property alias volume: output.volume
     }

@@ -1,4 +1,4 @@
-import QtQuick 2.15
+import QtQuick
 import QtQuick.Controls
 import QtCore
 
@@ -10,12 +10,12 @@ Component {
         height: 40
         radius: 5
         color: ListView.isCurrentItem ? "#E3E3E3" : "#FFFFFF"
-        property var songs: JSON.parse(listSettings.songsJSON)
+        property var songs: JSON.parse(listMemory.songsJSON)
         property int size: songs.length
-        property int currentIndex: listSettings.currentIndex
+        property int currentIndex: listMemory.currentIndex
         Settings {
-            id: listSettings
-            location: "file:settings.ini"
+            id: listMemory
+            location: "file:memory.ini"
             category: listName
             property int currentIndex: -1
             property string songsJSON: '[]'
@@ -30,8 +30,8 @@ Component {
         }
 
         Component.onDestruction: {
-            listSettings.currentIndex = currentIndex;
-            listSettings.songsJSON = JSON.stringify(songs);
+            listMemory.currentIndex = currentIndex;
+            listMemory.songsJSON = JSON.stringify(songs);
         }
         Row {
             leftPadding: 10
@@ -56,6 +56,7 @@ Component {
             }
         }
         MouseArea {
+            id: songListMouseArea
             anchors.fill: parent
             cursorShape: Qt.PointingHandCursor
             hoverEnabled: true
@@ -106,9 +107,9 @@ Component {
                         songListPopup.open();
                     }
                 }
-//                MenuItem {
-//                    text: "更改图标"
-//                }
+               // MenuItem {
+               //     text: "更改图标"
+               // }
                 MenuItem {
                     text: "删除歌单"
                     enabled: index === 0 ? false : true
@@ -125,6 +126,30 @@ Component {
                         }
                     }
                 }
+            }
+            drag.target: index ? songList : null
+            drag.axis: Drag.YAxis
+            drag.onActiveChanged: {
+                if(drag.active)
+                {
+                    songList.z = 2;
+                    listView.dragItemIndex = index;
+                }
+                else
+                {
+                    songList.z = 1;
+                }
+                songList.Drag.drop();
+            }
+        }
+        Drag.active: songListMouseArea.drag.active
+        Drag.hotSpot.x: width / 2
+        Drag.hotSpot.y: height / 2
+        states: State {
+            when: songListMouseArea.drag.active
+            ParentChange {
+                target: songList
+                parent: listView.parent
             }
         }
     }

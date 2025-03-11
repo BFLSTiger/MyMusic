@@ -1,19 +1,19 @@
-import QtQuick 2.15
+import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtCore
 
 Rectangle {
     width: parent.width
-    property string source: settings.source
-    property int listIndex: settings.listIndex
-    property int songIndex: settings.songIndex
-    property string songName: settings.songName
-//    property var sequence: JSON.parse(settings.sequenceJSON)
+    property string source: memory.source
+    property int listIndex: memory.listIndex
+    property int songIndex: memory.songIndex
+    property string songName: memory.songName
+//    property var sequence: JSON.parse(memory.sequenceJSON)
     signal songChanged()
     Settings {
-        id: settings
-        location: "file:settings.ini"
+        id: memory
+        location: "file:memory.ini"
         category: ""
         property string source: ""
         property int listIndex: -1
@@ -23,16 +23,16 @@ Rectangle {
         property string listsJSON: '[]'
     }
     Component.onDestruction: {
-        settings.source = source;
-        settings.listIndex = listIndex;
-        settings.songIndex = songIndex;
-        settings.songName = songName;
-//        settings.sequenceJSON = JSON.stringify(sequence);
+        memory.source = source;
+        memory.listIndex = listIndex;
+        memory.songIndex = songIndex;
+        memory.songName = songName;
+//        memory.sequenceJSON = JSON.stringify(sequence);
         var lists = [];
         for(var i = 1; i < listView.model.count; i++) {
             lists.push(listView.model.get(i));
         }
-        settings.listsJSON = JSON.stringify(lists);
+        memory.listsJSON = JSON.stringify(lists);
     }
     function nextSong() {
         if(songIndex != -1) {
@@ -85,13 +85,51 @@ Rectangle {
             spacing: 5
             header: songListHeader
             delegate: songListDelegate
+            property int dragItemIndex: -1
             model: ListModel {
+                id: listModel
                 ListElement {
                     coverImg: "qrc:/src/png/default.png"
                     listName: "默认歌单"
                     listInit: 0
                 }
             }
+            move: Transition {
+                NumberAnimation {
+                    properties: "x,y"
+                    duration: 200
+                    easing.type: Easing.OutQuad
+                }
+            }
+            DropArea {
+                anchors.fill: parent
+                onDropped: function(mouse) {
+                    var headerHeight = 20 - parent.visibleArea.yPosition * parent.contentHeight;
+                    if(headerHeight < 0)headerHeight = 0;
+                    var nextY = parent.visibleArea.yPosition * parent.contentHeight + mouse.y - headerHeight;
+                    if(nextY < 0)nextY = 0;
+                    if(nextY >= parent.contentHeight - 20) nextY = parent.contentHeight - songHeader.height - 1;
+                    var nextIndex = Math.floor(nextY / 45);
+                    if(nextIndex === 0)nextIndex = 1;
+                    if(nextIndex !== -1 && nextIndex !== parent.dragItemIndex)
+                    {
+                        if(nextIndex > parent.dragItemIndex)
+                            listModel.move(parent.dragItemIndex + 1,parent.dragItemIndex,nextIndex - parent.dragItemIndex);
+                        else
+                            listModel.move(nextIndex,nextIndex + 1,parent.dragItemIndex - nextIndex);
+                        if(body.listIndex === parent.dragItemIndex)
+                            body.listIndex = nextIndex;
+                        else
+                        {
+                            if(body.listIndex > parent.dragItemIndex && body.listIndex <= nextIndex)
+                                body.listIndex--;
+                            else if(body.listIndex < parent.dragItemIndex && body.listIndex >= nextIndex)
+                                body.listIndex++;
+                        }
+                    }
+                }
+            }
+
             onCurrentItemChanged: {
                 if(currentItem) {
                     songView.model.clear();
@@ -102,7 +140,7 @@ Rectangle {
             }
             Component.onCompleted: {
                 player.source = body.source;
-                var lists = JSON.parse(settings.listsJSON);
+                var lists = JSON.parse(memory.listsJSON);
                 for(var i = 0; i < lists.length; i++)
                     listView.model.append(lists[i]);
             }
@@ -147,10 +185,53 @@ Rectangle {
             anchors.bottom: parent.bottom
             width: parent.width
             currentIndex: -1
+            property int dragItemIndex: -1
             header: songHeader
             clip: true
             delegate: songDelegate
-            model: ListModel {}
+            model: ListModel {
+                id: songModel
+            }
+            move: Transition {
+                NumberAnimation {
+                    properties: "x,y"
+                    duration: 200
+                    easing.type: Easing.OutQuad
+                }
+            }
+            DropArea {
+                anchors.fill: parent
+                onDropped: function(mouse) {
+                    var headerHeight = 20 - parent.visibleArea.yPosition * parent.contentHeight;
+                    if(headerHeight < 0)headerHeight = 0;
+                    var nextY = parent.visibleArea.yPosition * parent.contentHeight + mouse.y - headerHeight;
+                    if(nextY < 0)nextY = 0;
+                    if(nextY >= parent.contentHeight - 20) nextY = parent.contentHeight - songHeader.height - 1;
+                    var nextIndex = parent.indexAt(0,nextY);
+                    if(nextIndex !== -1 && nextIndex !== parent.dragItemIndex)
+                    {
+                        if(nextIndex > parent.dragItemIndex)
+                            songModel.move(parent.dragItemIndex + 1,parent.dragItemIndex,nextIndex - parent.dragItemIndex);
+                        else
+                            songModel.move(nextIndex,nextIndex + 1,parent.dragItemIndex - nextIndex);
+                        listView.currentItem.songs = [];
+                        for(var i = 0; i < songView.count; i++)
+                        {
+                            var songInfo = {
+                                "songName": songModel.get(i)["songName"],
+                                "songSinger": songModel.get(i)["songSinger"],
+                                "songSource": songModel.get(i)["songSource"],
+                                "playingStatus": songModel.get(i)["playingStatus"],
+                            };
+                            listView.currentItem.songs.push(songInfo);
+                            if(listView.currentItem.songs[i]["playingStatus"] === true)
+                                songIndex = i;
+                        }
+                        listView.currentItem.currentIndex = songView.currentIndex;
+                        listView.currentItem.size = listView.currentItem.songs.length;
+                    }
+                }
+            }
         }
     }
     SongListPopup {

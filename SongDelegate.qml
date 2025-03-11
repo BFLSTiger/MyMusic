@@ -53,33 +53,66 @@ Component {
             }
         }
         MouseArea {
+            id: songMouseArea
             anchors.fill: parent
             hoverEnabled: true
             acceptedButtons: Qt.LeftButton | Qt.RightButton
-            onClicked: (mouse)=> {
+            onClicked: function(mouse) {
                 if(mouse.button === Qt.LeftButton) {
-                    song.ListView.view.currentIndex = index;
+                    songView.currentIndex = index;
                 }
                 else {
                     songMenu.popup();
                 }
             }
-            onDoubleClicked: (mouse)=> {
+            onDoubleClicked: function(mouse) {
                 if(mouse.button === Qt.LeftButton) {
                     if(body.songIndex != -1) {
                         listView.itemAtIndex(body.listIndex).songs[body.songIndex]["playingStatus"] = false;
                         if(listView.currentIndex === body.listIndex)
-                            song.ListView.view.itemAtIndex(body.songIndex).isPlaying = 0;
+                        {
+                            songView.itemAtIndex(body.songIndex).isPlaying = 0;
+                            songModel.get(body.songIndex)["playingStatus"] = false;
+                        }
                     }
                     body.source = songPlayer.source;
                     body.listIndex = listView.currentIndex;
                     body.songIndex = index;
                     listView.itemAtIndex(body.listIndex).songs[body.songIndex]["playingStatus"] = true;
                     song.isPlaying = 1;
+                    songModel.get(body.songIndex)["playingStatus"] = true;
                     songChanged();
                 }
             }
+
+            drag.target: song
+            drag.axis: Drag.YAxis
+            drag.onActiveChanged: {
+                if(drag.active)
+                {
+                    songView.dragItemIndex = index;
+                    song.z = 2;
+                }
+                else
+                {
+                    song.z = 1;
+                }
+                song.Drag.drop();
+            }
         }
+        Drag.active: songMouseArea.drag.active
+        Drag.hotSpot.x: songMouseArea.mouseX
+        Drag.hotSpot.y: songMouseArea.mouseY
+        states: [
+            State {
+                when: songMouseArea.drag.active
+                ParentChange {
+                    target: song
+                    parent: songView.parent
+                }
+            }
+        ]
+
         Menu {
             id: songMenu
             MenuItem {
