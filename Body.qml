@@ -9,7 +9,6 @@ Rectangle {
     property int listIndex: memory.listIndex
     property int songIndex: memory.songIndex
     property string songName: memory.songName
-//    property var sequence: JSON.parse(memory.sequenceJSON)
     signal songChanged()
     Settings {
         id: memory
@@ -19,7 +18,6 @@ Rectangle {
         property int listIndex: -1
         property int songIndex: -1
         property string songName: ""
-//        property string sequenceJSON: '[]'
         property string listsJSON: '[]'
     }
     Component.onDestruction: {
@@ -27,7 +25,6 @@ Rectangle {
         memory.listIndex = listIndex;
         memory.songIndex = songIndex;
         memory.songName = songName;
-//        memory.sequenceJSON = JSON.stringify(sequence);
         var lists = [];
         for(var i = 1; i < listView.model.count; i++) {
             lists.push(listView.model.get(i));
@@ -38,26 +35,39 @@ Rectangle {
         if(songIndex != -1) {
             listView.itemAtIndex(listIndex).songs[songIndex]["playingStatus"] = false;
             if(listView.currentIndex === listIndex)
+            {
                 songView.itemAtIndex(songIndex).isPlaying = false;
+                songModel.get(songindex)["playingStatus"] = false;
+            }
         }
         songIndex = (songIndex + 1) % listView.itemAtIndex(listIndex).songs.length;
         source = listView.itemAtIndex(listIndex).songs[songIndex]["songSource"];
         listView.itemAtIndex(listIndex).songs[songIndex]["playingStatus"] = true;
         if(listView.currentIndex === listIndex)
+        {
             songView.itemAtIndex(songIndex).isPlaying = true;
+            songModel.get(songindex)["playingStatus"] = true;
+        }
         songChanged();
     }
     function randSong() {
         if(songIndex != -1) {
             listView.itemAtIndex(listIndex).songs[songIndex]["playingStatus"] = false;
             if(listView.currentIndex === listIndex)
+            {
                 songView.itemAtIndex(songIndex).isPlaying = false;
+                songModel.get(songindex)["playingStatus"] = false;
+            }
         }
-        songIndex = Math.floor(Math.random()*listView.itemAtIndex(listIndex).songs.length);
+        step = Math.floor(Math.random()*(listView.itemAtIndex(listIndex).songs.length - 1));
+        songIndex = (songIndex + step) % listView.itemAtIndex(listIndex).songs.length;
         source = listView.itemAtIndex(listIndex).songs[songIndex]["songSource"];
         listView.itemAtIndex(listIndex).songs[songIndex]["playingStatus"] = true;
         if(listView.currentIndex === listIndex)
+        {
             songView.itemAtIndex(songIndex).isPlaying = true;
+            songModel.get(songindex)["playingStatus"] = true;
+        }
         songChanged();
     }
     onSongIndexChanged: {
@@ -108,7 +118,7 @@ Rectangle {
                     if(headerHeight < 0)headerHeight = 0;
                     var nextY = parent.visibleArea.yPosition * parent.contentHeight + mouse.y - headerHeight;
                     if(nextY < 0)nextY = 0;
-                    if(nextY >= parent.contentHeight - 20) nextY = parent.contentHeight - songHeader.height - 1;
+                    if(nextY >= parent.contentHeight - 20) nextY = parent.contentHeight - headerHeight - 1;
                     var nextIndex = Math.floor(nextY / 45);
                     if(nextIndex === 0)nextIndex = 1;
                     if(nextIndex !== -1 && nextIndex !== parent.dragItemIndex)
@@ -206,7 +216,7 @@ Rectangle {
                     if(headerHeight < 0)headerHeight = 0;
                     var nextY = parent.visibleArea.yPosition * parent.contentHeight + mouse.y - headerHeight;
                     if(nextY < 0)nextY = 0;
-                    if(nextY >= parent.contentHeight - 20) nextY = parent.contentHeight - songHeader.height - 1;
+                    if(nextY >= parent.contentHeight - 20) nextY = parent.contentHeight - headerHeight - 1;
                     var nextIndex = parent.indexAt(0,nextY);
                     if(nextIndex !== -1 && nextIndex !== parent.dragItemIndex)
                     {
