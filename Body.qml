@@ -37,7 +37,7 @@ Rectangle {
             if(listView.currentIndex === listIndex)
             {
                 songView.itemAtIndex(songIndex).isPlaying = false;
-                songModel.get(songindex)["playingStatus"] = false;
+                songModel.get(songIndex)["playingStatus"] = false;
             }
         }
         songIndex = (songIndex + 1) % listView.itemAtIndex(listIndex).songs.length;
@@ -46,7 +46,7 @@ Rectangle {
         if(listView.currentIndex === listIndex)
         {
             songView.itemAtIndex(songIndex).isPlaying = true;
-            songModel.get(songindex)["playingStatus"] = true;
+            songModel.get(songIndex)["playingStatus"] = true;
         }
         songChanged();
     }
@@ -56,7 +56,7 @@ Rectangle {
             if(listView.currentIndex === listIndex)
             {
                 songView.itemAtIndex(songIndex).isPlaying = false;
-                songModel.get(songindex)["playingStatus"] = false;
+                songModel.get(songIndex)["playingStatus"] = false;
             }
         }
         step = Math.floor(Math.random()*(listView.itemAtIndex(listIndex).songs.length - 1));
@@ -66,11 +66,11 @@ Rectangle {
         if(listView.currentIndex === listIndex)
         {
             songView.itemAtIndex(songIndex).isPlaying = true;
-            songModel.get(songindex)["playingStatus"] = true;
+            songModel.get(songIndex)["playingStatus"] = true;
         }
         songChanged();
     }
-    onSongIndexChanged: {
+    onSongChanged: {
         if(listIndex !== -1 && listView.itemAtIndex(listIndex)) {
             listView.itemAtIndex(listIndex).currentIndex = songIndex;
             songName = songIndex === -1 ? "" : listView.itemAtIndex(listIndex).songs[songIndex]["songName"];

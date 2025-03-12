@@ -87,6 +87,7 @@ Component {
                     body.songIndex = 0;
                     body.source = songList.songs[0]["songSource"];
                     songList.songs[0]["playingStatus"] = true;
+                    songModel.get(0)["playingStatus"] = true;
                     songView.itemAtIndex(0).isPlaying = true;
                 }
                 else {
