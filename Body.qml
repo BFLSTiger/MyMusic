@@ -59,7 +59,7 @@ Rectangle {
                 songModel.get(songIndex)["playingStatus"] = false;
             }
         }
-        step = Math.floor(Math.random()*(listView.itemAtIndex(listIndex).songs.length - 1));
+        var step = Math.floor(Math.random()*(listView.itemAtIndex(listIndex).songs.length - 1));
         songIndex = (songIndex + step) % listView.itemAtIndex(listIndex).songs.length;
         source = listView.itemAtIndex(listIndex).songs[songIndex]["songSource"];
         listView.itemAtIndex(listIndex).songs[songIndex]["playingStatus"] = true;

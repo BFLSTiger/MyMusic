@@ -157,6 +157,15 @@ Window {
                 }
             }
             MenuItem {
+                text: "下一首"
+                onTriggered: {
+                    if(player.type === 1)
+                        body.randSong();
+                    else
+                        body.nextSong();
+                }
+            }
+            MenuItem {
                 text: "退出"
                 onTriggered: {
                     Qt.quit();
