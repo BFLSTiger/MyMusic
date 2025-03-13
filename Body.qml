@@ -237,10 +237,12 @@ Rectangle {
                             if(listView.currentItem.songs[i]["playingStatus"] === true)
                                 songIndex = i;
                         }
-                        listView.currentItem.currentIndex = songView.currentIndex;
                         listView.currentItem.size = listView.currentItem.songs.length;
                     }
                 }
+            }
+            onCurrentIndexChanged: {
+                listView.currentItem.currentIndex = currentIndex;
             }
         }
     }
