@@ -114,8 +114,7 @@ Rectangle {
             DropArea {
                 anchors.fill: parent
                 onDropped: function(mouse) {
-                    var headerHeight = 20 - parent.visibleArea.yPosition * parent.contentHeight;
-                    if(headerHeight < 0)headerHeight = 0;
+                    var headerHeight = 20;
                     var nextY = parent.visibleArea.yPosition * parent.contentHeight + mouse.y - headerHeight;
                     if(nextY < 0)nextY = 0;
                     if(nextY >= parent.contentHeight - 20) nextY = parent.contentHeight - headerHeight - 1;
@@ -211,13 +210,14 @@ Rectangle {
             }
             DropArea {
                 anchors.fill: parent
-                onDropped: function(mouse) {
-                    var headerHeight = 20 - parent.visibleArea.yPosition * parent.contentHeight;
-                    if(headerHeight < 0)headerHeight = 0;
-                    var nextY = parent.visibleArea.yPosition * parent.contentHeight + mouse.y - headerHeight;
+                onDropped: function(drop) {
+                    var headerHeight = 20;
+                    var nextY = parent.visibleArea.yPosition * parent.contentHeight + drop.y - headerHeight;
                     if(nextY < 0)nextY = 0;
                     if(nextY >= parent.contentHeight - 20) nextY = parent.contentHeight - headerHeight - 1;
-                    var nextIndex = parent.indexAt(0,nextY);
+                    var nextIndex = Math.floor(nextY / 50);
+                    if(listIndex === listView.currentIndex && (songIndex + 1) * 50 <= nextY)
+                        nextIndex = Math.floor((nextY - 10) / 50);
                     if(nextIndex !== -1 && nextIndex !== parent.dragItemIndex)
                     {
                         if(nextIndex > parent.dragItemIndex)

@@ -101,8 +101,9 @@ Component {
             }
         }
         Drag.active: songMouseArea.drag.active
-        Drag.hotSpot.x: songMouseArea.mouseX
-        Drag.hotSpot.y: songMouseArea.mouseY
+        Drag.source: song
+        Drag.hotSpot.x: width / 2
+        Drag.hotSpot.y: height / 2
         states: [
             State {
                 when: songMouseArea.drag.active
