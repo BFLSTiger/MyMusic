@@ -147,6 +147,7 @@ Window {
         menu: Menu {
             MenuItem {
                 text: player.playbackState === MediaPlayer.PlayingState ? "暂停" : "播放"
+                enabled: player.source == "" ? false : true
                 onTriggered: {
                     if(player.playbackState === MediaPlayer.PlayingState) {
                         player.pause();
@@ -158,6 +159,7 @@ Window {
             }
             MenuItem {
                 text: "下一首"
+                enabled: player.source == "" ? false : true
                 onTriggered: {
                     if(player.type === 1)
                         body.randSong();
