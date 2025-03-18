@@ -147,9 +147,9 @@ Popup {
                         else {
                             listView.currentItem.songs.push(songInfo);
                             songView.model.append(songInfo);
-                        }
-                        if(body.listIndex === listView.currentIndex && body.songIndex === songPopup.index) {
-                            body.songName = nameInput.text;
+                            if(body.listIndex === listView.currentIndex && body.songIndex === songPopup.index) {
+                                body.songName = nameInput.text;
+                            }
                         }
                         listView.currentItem.size = listView.currentItem.songs.length;
                         songPopup.close();
